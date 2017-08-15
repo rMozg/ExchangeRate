@@ -1,4 +1,4 @@
-package ru.mozgovoy.oleg.exchangerate.ui.presenter;
+package ru.mozgovoy.oleg.exchangerate.ui.view;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;

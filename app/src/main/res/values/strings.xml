@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">ExchangeRate</string>
+    <string name="rub_name">Российский рубль</string>
 </resources>
