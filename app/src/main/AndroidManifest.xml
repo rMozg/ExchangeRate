@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="ru.mozgovoy.oleg.exchangerate">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:name=".model.MyApplication"
         android:allowBackup="true"
@@ -12,7 +14,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".ui.view.RateActivity"
-            android:windowSoftInputMode="stateAlwaysVisible">
+            android:windowSoftInputMode="stateVisible">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

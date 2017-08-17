@@ -19,7 +19,7 @@ public class NetworkUtils {
             urlConnection.setRequestMethod("GET");
             if (urlConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
                 StringBuilder xmlResponse = new StringBuilder();
-                BufferedReader input = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()), 8192);
+                BufferedReader input = new BufferedReader(new InputStreamReader(urlConnection.getInputStream(), "CP1251"), 8192);
                 String strLine = null;
                 while ((strLine = input.readLine()) != null) {
                     xmlResponse.append(strLine);

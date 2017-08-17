@@ -7,7 +7,7 @@ import ru.mozgovoy.oleg.exchangerate.model.core.Currency;
 
 public interface IRateView {
 
-    void showCurrency(List<Currency> currencies);
+    void setCurrency(List<Currency> currencies);
 
     void showRecalculatedValue(BigDecimal value);
 

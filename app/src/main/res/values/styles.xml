@@ -8,4 +8,38 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="AppTheme.Button" parent="android:Widget.Material.Button.Borderless.Colored">
+        <item name="android:textColor">@color/colorAccent</item>
+        <item name="android:elevation">@dimen/normal_elevation</item>
+        <item name="android:layout_marginStart">@dimen/normal_margin</item>
+        <item name="android:layout_marginEnd">@dimen/normal_margin</item>
+        <item name="android:layout_marginTop">@dimen/small_margin</item>
+        <item name="android:layout_marginBottom">@dimen/small_margin</item>
+    </style>
+
+    <style name="AppTheme.Spinner" parent="android:Widget.Material.Spinner">
+        <item name="android:textColor">@color/colorAccent</item>
+        <item name="android:elevation">@dimen/normal_elevation</item>
+        <item name="android:layout_marginStart">@dimen/normal_margin</item>
+        <item name="android:layout_marginEnd">@dimen/normal_margin</item>
+        <item name="android:layout_marginTop">@dimen/small_margin</item>
+        <item name="android:layout_marginBottom">@dimen/small_margin</item>
+    </style>
+
+    <style name="AppTheme.Edit">
+        <item name="android:elevation">@dimen/normal_elevation</item>
+        <item name="android:layout_marginStart">@dimen/normal_margin</item>
+        <item name="android:layout_marginEnd">@dimen/normal_margin</item>
+        <item name="android:layout_marginTop">@dimen/small_margin</item>
+        <item name="android:layout_marginBottom">@dimen/small_margin</item>
+    </style>
+
+    <style name="AppTheme.Text">
+        <item name="android:layout_margin">@dimen/normal_margin</item>
+        <item name="android:layout_marginStart">@dimen/normal_margin</item>
+        <item name="android:layout_marginEnd">@dimen/normal_margin</item>
+        <item name="android:layout_marginTop">@dimen/small_margin</item>
+        <item name="android:layout_marginBottom">@dimen/small_margin</item>
+    </style>
+
 </resources>

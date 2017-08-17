@@ -8,21 +8,70 @@ import java.math.BigDecimal;
 
 @Root(name = "Valute")
 public class Valute {
+    private String id;
+    private int numCode;
+    private String charCode;
+    private int nominal;
+    private String name;
+    private String value;
+
     @Attribute(name = "ID")
-    public int id;
+    public String getId() {
+        return id;
+    }
+
+    @Attribute(name = "ID")
+    public void setId(String id) {
+        this.id = id;
+    }
 
     @Element(name = "NumCode")
-    public int numCode;
+    public int getNumCode() {
+        return numCode;
+    }
+
+    @Element(name = "NumCode")
+    public void setNumCode(int numCode) {
+        this.numCode = numCode;
+    }
 
     @Element(name = "CharCode")
-    public int charCode;
+    public String getCharCode() {
+        return charCode;
+    }
+
+    @Element(name = "CharCode")
+    public void setCharCode(String charCode) {
+        this.charCode = charCode;
+    }
 
     @Element(name = "Nominal")
-    public int nominal;
+    public int getNominal() {
+        return nominal;
+    }
+
+    @Element(name = "Nominal")
+    public void setNominal(int nominal) {
+        this.nominal = nominal;
+    }
 
     @Element(name = "Name")
-    public String name;
+    public String getName() {
+        return name;
+    }
+
+    @Element(name = "Name")
+    public void setName(String name) {
+        this.name = name;
+    }
 
     @Element(name = "Value")
-    public BigDecimal value;
+    public String getValue() {
+        return value;
+    }
+
+    @Element(name = "Value")
+    public void setValue(String value) {
+        this.value = value;
+    }
 }

@@ -1,4 +1,4 @@
-package ru.mozgovoy.oleg.exchangerate.model;
+package ru.mozgovoy.oleg.exchangerate.model.storage;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -16,18 +16,19 @@ import java.util.Set;
 
 import ru.mozgovoy.oleg.exchangerate.model.core.CurrencyRate;
 
-public class SharedPreferenceEngine {
+public class SharedPreferenceEngine implements IStorage {
 
     private static final String APP_PREFERENCES = "APP_PREFERENCES";
     private static final String PREFERENCE_NAME_CURRENT_RATES = "PREFERENCE_NAME_CURRENT_RATES";
 
     public static SharedPreferences preferences;
 
-    public static void initPreferences(Context context) {
+    public SharedPreferenceEngine(Context context) {
         preferences = context.getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
     }
 
-    public static void setCurrencyRates(@NonNull List<CurrencyRate> currencyRates) {
+    @Override
+    public void setCurrencyRates(@NonNull List<CurrencyRate> currencyRates) {
         SharedPreferences.Editor editor = preferences.edit();
         Set<String> rates = new HashSet<>();
 
@@ -47,8 +48,9 @@ public class SharedPreferenceEngine {
         editor.commit();
     }
 
+    @Override
     @NonNull
-    public static List<CurrencyRate> getCurrencyRates() {
+    public List<CurrencyRate> getCurrencyRates() {
         List<String> strings = new ArrayList<>(preferences.getStringSet(PREFERENCE_NAME_CURRENT_RATES, new HashSet<String>()));
         List<CurrencyRate> currencyRates = new ArrayList<>();
         Serializer serializer = new Persister();
