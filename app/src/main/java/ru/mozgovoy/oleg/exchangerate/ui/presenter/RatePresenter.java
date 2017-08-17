@@ -9,9 +9,9 @@ import android.support.v4.os.ResultReceiver;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import ru.mozgovoy.oleg.exchangerate.R;
 import ru.mozgovoy.oleg.exchangerate.model.core.Currency;
@@ -28,8 +28,8 @@ public class RatePresenter implements IRatePresenter {
     private final CurrencyRate alwaysInListCurrencyRate;
     private final IRateView rateView;
     private final IStorage storage;
+    private final Map<Currency, CurrencyRate> currencyRates = new ConcurrentHashMap<>();
 
-    private Map<Currency, CurrencyRate> currencyRates = new HashMap<>();
 
     public RatePresenter(@NonNull Resources resources, @NonNull IRateView rateView, @NonNull IStorage storage) {
         alwaysInListCurrencyRate = new CurrencyRate(
@@ -40,6 +40,7 @@ public class RatePresenter implements IRatePresenter {
                 ), 1, BigDecimal.ONE);
         this.rateView = rateView;
         this.storage = storage;
+        refreshCurrencyRatesMap(storage.getCurrencyRates());
     }
 
     @Override
@@ -56,9 +57,11 @@ public class RatePresenter implements IRatePresenter {
                         rateView.setCurrency(new ArrayList<Currency>(currencyRates.keySet()));
                     } else {
                         rateView.showError(IRateView.ErrorType.DOWNLOAD);
+                        rateView.setCurrency(new ArrayList<Currency>(currencyRates.keySet()));
                     }
                 } else if (resultCode == RESULT_ERROR) {
                     rateView.showError(IRateView.ErrorType.DOWNLOAD);
+                    rateView.setCurrency(new ArrayList<Currency>(currencyRates.keySet()));
                 }
                 super.onReceiveResult(resultCode, resultData);
             }

@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Конвертер валют</string>
     <string name="rub_name">Российский рубль</string>
+    <string name="from_value_hint">0</string>
 </resources>

@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -33,7 +34,7 @@ public class RateActivity extends AppCompatActivity implements IRateView {
     private SwipeRefreshLayout swipeRefreshLayout;
     private Spinner spinnerFrom;
     private Spinner spinnerTo;
-    private Button buttonConvert;
+    private ImageButton buttonConvert;
     private EditText editFrom;
     private TextView textTo;
 
@@ -47,7 +48,7 @@ public class RateActivity extends AppCompatActivity implements IRateView {
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swype_layout);
         spinnerFrom = (Spinner) findViewById(R.id.spinner_from);
         spinnerTo = (Spinner) findViewById(R.id.spinner_to);
-        buttonConvert = (Button) findViewById(R.id.button_convert);
+        buttonConvert = (ImageButton) findViewById(R.id.button_convert);
         editFrom = (EditText) findViewById(R.id.edit_from);
         textTo = (TextView) findViewById(R.id.text_to);
 
