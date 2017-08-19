@@ -4,5 +4,5 @@ import android.support.annotation.Nullable;
 
 public interface INetworkHelper {
     @Nullable
-    String downloadFileToString(String address);
+    String downloadFileToString(String address, boolean utf);
 }

@@ -65,7 +65,8 @@ public class RateActivity extends AppCompatActivity implements IRateView {
                 getResources(),
                 this,
                 MyApplication.getInstance().getStorage(),
-                MyApplication.getInstance().getConverterEngine()
+                MyApplication.getInstance().getConverterEngine(),
+                MyApplication.getInstance().getMathEngine()
         );
         ratePresenter.startDownloadNewRates(getApplicationContext());
 
@@ -167,7 +168,7 @@ public class RateActivity extends AppCompatActivity implements IRateView {
 
     @Override
     public void showRecalculatedValue(BigDecimal value) {
-        textTo.setText(value.setScale(MAX_SCALE, BigDecimal.ROUND_HALF_UP).toPlainString());
+        textTo.setText(value.setScale(MAX_SCALE, BigDecimal.ROUND_HALF_UP).stripTrailingZeros().toPlainString());
     }
 
     @Override
