@@ -4,6 +4,8 @@ import android.app.Application;
 
 import ru.mozgovoy.oleg.exchangerate.model.exchange.ConverterEngine;
 import ru.mozgovoy.oleg.exchangerate.model.exchange.IConverterEngine;
+import ru.mozgovoy.oleg.exchangerate.model.math.IMathEngine;
+import ru.mozgovoy.oleg.exchangerate.model.math.MathEngine;
 import ru.mozgovoy.oleg.exchangerate.model.network.INetworkHelper;
 import ru.mozgovoy.oleg.exchangerate.model.network.NetworkHelper;
 import ru.mozgovoy.oleg.exchangerate.model.storage.IStorage;
@@ -15,6 +17,7 @@ public class MyApplication extends Application {
     private IStorage storage;
     private IConverterEngine converterEngine;
     private INetworkHelper networkHelper;
+    private IMathEngine mathEngine;
 
     public static MyApplication getInstance() {
         return myApplication;
@@ -27,6 +30,7 @@ public class MyApplication extends Application {
         storage = new SharedPreferenceEngine(getApplicationContext());
         converterEngine = new ConverterEngine();
         networkHelper = new NetworkHelper();
+        mathEngine = new MathEngine();
     }
 
     public IStorage getStorage() {
@@ -39,5 +43,9 @@ public class MyApplication extends Application {
 
     public INetworkHelper getNetworkHelper() {
         return networkHelper;
+    }
+
+    public IMathEngine getMathEngine() {
+        return mathEngine;
     }
 }

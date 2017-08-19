@@ -46,7 +46,7 @@ public class DownloadService extends IntentService {
     }
 
     private void startDownloadInService(INetworkHelper networkHelper, ResultReceiver resultReceiver) {
-        String curXml = networkHelper.downloadFileToString(CURRENCY_RATE_ADDRESS);
+        String curXml = networkHelper.downloadFileToString(CURRENCY_RATE_ADDRESS, false);
         Bundle result = new Bundle();
         result.putString(RatePresenter.DownloadResultReceiver.RESULT_OK_PARAM_XML_TEXT, curXml);
         resultReceiver.send(RatePresenter.DownloadResultReceiver.RESULT_OK, result);

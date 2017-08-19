@@ -17,18 +17,18 @@ import ru.mozgovoy.oleg.exchangerate.R;
 import ru.mozgovoy.oleg.exchangerate.model.core.Currency;
 import ru.mozgovoy.oleg.exchangerate.model.core.CurrencyRate;
 import ru.mozgovoy.oleg.exchangerate.model.exchange.IConverterEngine;
+import ru.mozgovoy.oleg.exchangerate.model.math.IMathEngine;
 import ru.mozgovoy.oleg.exchangerate.model.storage.IStorage;
 import ru.mozgovoy.oleg.exchangerate.service.DownloadService;
 import ru.mozgovoy.oleg.exchangerate.ui.view.IRateView;
 
 public class RatePresenter implements IRatePresenter {
 
-    private static final int MATH_SCALE = 6;
-
     private final CurrencyRate alwaysInListCurrencyRate;
     private final IRateView rateView;
     private final IStorage storage;
     private final IConverterEngine converterEngine;
+    private final IMathEngine mathEngine;
     private final Map<Currency, CurrencyRate> currencyRates = new ConcurrentHashMap<>();
 
 
@@ -36,7 +36,8 @@ public class RatePresenter implements IRatePresenter {
             @NonNull Resources resources,
             @NonNull IRateView rateView,
             @NonNull IStorage storage,
-            @NonNull IConverterEngine converterEngine
+            @NonNull IConverterEngine converterEngine,
+            @NonNull IMathEngine mathEngine
     ) {
         alwaysInListCurrencyRate = new CurrencyRate(
                 new Currency(
@@ -47,6 +48,7 @@ public class RatePresenter implements IRatePresenter {
         this.rateView = rateView;
         this.storage = storage;
         this.converterEngine = converterEngine;
+        this.mathEngine = mathEngine;
         refreshCurrencyRatesMap(storage.getCurrencyRates());
         rateView.setCurrency(new ArrayList<Currency>(currencyRates.keySet()));
     }
@@ -85,13 +87,8 @@ public class RatePresenter implements IRatePresenter {
             rateView.showError(IRateView.ErrorType.CALCULATE);
             return;
         }
-        BigDecimal res = value
-                .multiply(currencyRateFrom.getValue())
-                .multiply(new BigDecimal(currencyRateTo.getNominal()))
-                .divide(new BigDecimal(currencyRateFrom.getNominal())
-                                .multiply(currencyRateTo.getValue()),
-                        MATH_SCALE,
-                        BigDecimal.ROUND_HALF_UP);
+
+        BigDecimal res = mathEngine.convertCurrency(value, currencyRateFrom, currencyRateTo);
         rateView.showRecalculatedValue(res);
     }
 

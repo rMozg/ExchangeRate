@@ -11,7 +11,7 @@ public class NetworkHelper implements INetworkHelper {
 
     @Override
     @Nullable
-    public String downloadFileToString(String address) {
+    public String downloadFileToString(String address, boolean utf) {
         String xmlString = null;
         HttpURLConnection urlConnection = null;
         try {
@@ -20,7 +20,7 @@ public class NetworkHelper implements INetworkHelper {
             urlConnection.setRequestMethod("GET");
             if (urlConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
                 StringBuilder xmlResponse = new StringBuilder();
-                BufferedReader input = new BufferedReader(new InputStreamReader(urlConnection.getInputStream(), "CP1251"), 8192);
+                BufferedReader input = new BufferedReader(new InputStreamReader(urlConnection.getInputStream(), utf ? "UTF8" : "CP1251"), 8192);
                 String strLine = null;
                 while ((strLine = input.readLine()) != null) {
                     xmlResponse.append(strLine);
