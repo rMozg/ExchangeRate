@@ -48,6 +48,7 @@ public class RatePresenter implements IRatePresenter {
         this.storage = storage;
         this.converterEngine = converterEngine;
         refreshCurrencyRatesMap(storage.getCurrencyRates());
+        rateView.setCurrency(new ArrayList<Currency>(currencyRates.keySet()));
     }
 
     @Override

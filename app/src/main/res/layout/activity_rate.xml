@@ -45,8 +45,9 @@
             style="@style/AppTheme.Button"
             android:layout_width="@dimen/convert_button_size"
             android:layout_height="@dimen/convert_button_size"
-            android:layout_gravity="end|center_vertical"
+            android:layout_gravity="end|right|center_vertical"
             android:layout_marginEnd="@dimen/big_margin"
+            android:layout_marginRight="@dimen/big_margin"
             android:background="@drawable/round_ripple"
             android:src="@drawable/ic_arrow_downward_black_24dp" />
 
