@@ -1,6 +1,7 @@
 package ru.mozgovoy.oleg.exchangerate.ui.view;
 
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputFilter;
@@ -8,8 +9,8 @@ import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.method.DigitsKeyListener;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
@@ -27,16 +28,23 @@ import ru.mozgovoy.oleg.exchangerate.model.core.Currency;
 import ru.mozgovoy.oleg.exchangerate.ui.presenter.IRatePresenter;
 import ru.mozgovoy.oleg.exchangerate.ui.presenter.RatePresenter;
 
+import static ru.mozgovoy.oleg.exchangerate.ui.view.IRateView.ErrorType.CALCULATE;
+
 public class RateActivity extends AppCompatActivity implements IRateView {
 
     private static final int MAX_SCALE = 3;
+    private static final String STATE_FROM_CURRENCY = "STATE_FROM_CURRENCY";
+    private static final String STATE_TO_CURRENCY = "STATE_TO_CURRENCY";
 
+    private ViewGroup screenGroup;
     private SwipeRefreshLayout swipeRefreshLayout;
     private Spinner spinnerFrom;
     private Spinner spinnerTo;
     private ImageButton buttonConvert;
     private EditText editFrom;
     private TextView textTo;
+    private Integer fromCurrencyCode = null;
+    private Integer toCurrencyCode = null;
 
     private IRatePresenter ratePresenter;
 
@@ -45,6 +53,7 @@ public class RateActivity extends AppCompatActivity implements IRateView {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rate);
 
+        screenGroup = (ViewGroup) findViewById(R.id.screen_group);
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swype_layout);
         spinnerFrom = (Spinner) findViewById(R.id.spinner_from);
         spinnerTo = (Spinner) findViewById(R.id.spinner_to);
@@ -52,7 +61,18 @@ public class RateActivity extends AppCompatActivity implements IRateView {
         editFrom = (EditText) findViewById(R.id.edit_from);
         textTo = (TextView) findViewById(R.id.text_to);
 
-        ratePresenter = new RatePresenter(getResources(), this, MyApplication.getInstance().getStorage());
+        ratePresenter = new RatePresenter(
+                getResources(),
+                this,
+                MyApplication.getInstance().getStorage(),
+                MyApplication.getInstance().getConverterEngine()
+        );
+        ratePresenter.startDownloadNewRates(getApplicationContext());
+
+        if (savedInstanceState != null) {
+            fromCurrencyCode = savedInstanceState.getInt(STATE_FROM_CURRENCY);
+            toCurrencyCode = savedInstanceState.getInt(STATE_TO_CURRENCY);
+        }
 
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -74,11 +94,11 @@ public class RateActivity extends AppCompatActivity implements IRateView {
                                 ((CurrencyView) curFromObject).getCurrency(),
                                 ((CurrencyView) curToObject).getCurrency());
                     } else {
-                        ((IRateView) RateActivity.this).showError(ErrorType.CALCULATE);
+                        ((IRateView) RateActivity.this).showError(CALCULATE);
                     }
                 } catch (NumberFormatException exc) {
                     exc.printStackTrace();
-                    ((IRateView) RateActivity.this).showError(ErrorType.CALCULATE);
+                    ((IRateView) RateActivity.this).showError(CALCULATE);
                 }
             }
         });
@@ -95,15 +115,54 @@ public class RateActivity extends AppCompatActivity implements IRateView {
     @Override
     public void setCurrency(List<Currency> currencies) {
         swipeRefreshLayout.setRefreshing(false);
+        List<CurrencyView> currencyViews = fromCurrencies(currencies);
 
-        ArrayAdapter<CurrencyView> adapterFrom = new ArrayAdapter<CurrencyView>(this, android.R.layout.simple_spinner_item, fromCurrencies(currencies));
-        adapterFrom.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerFrom.setAdapter(adapterFrom);
+        ArrayAdapter<CurrencyView> oldSpinnerFromAdapter = (ArrayAdapter<CurrencyView>) spinnerFrom.getAdapter();
+        ArrayAdapter<CurrencyView> oldSpinnerToAdapter = (ArrayAdapter<CurrencyView>) spinnerFrom.getAdapter();
 
-        ArrayAdapter<CurrencyView> adapterTo = new ArrayAdapter<CurrencyView>(this, android.R.layout.simple_spinner_item, fromCurrencies(currencies));
-        adapterTo.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerTo.setAdapter(adapterFrom);
+        boolean listEquals = false;
+        if (oldSpinnerFromAdapter != null && oldSpinnerToAdapter != null) {
+            if (currencyViews.size() == oldSpinnerFromAdapter.getCount() &&
+                    currencyViews.size() == oldSpinnerToAdapter.getCount()) {
+                listEquals = true;
+                for (int i = 0; i < currencyViews.size(); i++) {
+                    if (!currencyViews.get(i).equals(oldSpinnerFromAdapter.getItem(i)) ||
+                            !currencyViews.get(i).equals(oldSpinnerToAdapter.getItem(i))) {
+                        listEquals = false;
+                        break;
+                    }
+                }
+            }
+        }
 
+        if (!listEquals) {
+            ArrayAdapter<CurrencyView> adapterFrom = new ArrayAdapter<CurrencyView>(this, android.R.layout.simple_spinner_item, currencyViews);
+            adapterFrom.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinnerFrom.setAdapter(adapterFrom);
+            if (fromCurrencyCode != null) {
+                for (int i = 0; i < adapterFrom.getCount(); i++) {
+                    if (adapterFrom.getItem(i) != null && fromCurrencyCode == adapterFrom.getItem(i).getCurrency().getCode()) {
+                        spinnerFrom.setSelection(i);
+                        fromCurrencyCode = null;
+                        break;
+                    }
+                }
+            }
+
+            ArrayAdapter<CurrencyView> adapterTo = new ArrayAdapter<CurrencyView>(this, android.R.layout.simple_spinner_item, currencyViews);
+            adapterTo.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinnerTo.setAdapter(adapterFrom);
+            if (toCurrencyCode != null) {
+                for (int i = 0; i < adapterTo.getCount(); i++) {
+                    if (adapterTo.getItem(i) != null && toCurrencyCode == adapterTo.getItem(i).getCurrency().getCode()) {
+                        spinnerTo.setSelection(i);
+                        toCurrencyCode = null;
+                        break;
+                    }
+                }
+            }
+
+        }
     }
 
     @Override
@@ -115,13 +174,24 @@ public class RateActivity extends AppCompatActivity implements IRateView {
     public void showError(ErrorType errorType) {
         switch (errorType) {
             case CALCULATE:
-
+                Snackbar.make(screenGroup.getRootView(), getString(R.string.error_calculate), Snackbar.LENGTH_LONG).show();
                 break;
             case DOWNLOAD:
-
+                Snackbar.make(screenGroup, getString(R.string.error_downloading), Snackbar.LENGTH_LONG).show();
                 swipeRefreshLayout.setRefreshing(false);
                 break;
         }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        Object curFromObject = spinnerFrom.getSelectedItem();
+        Object curToObject = spinnerTo.getSelectedItem();
+        if ((curFromObject instanceof CurrencyView) && (curToObject instanceof CurrencyView)) {
+            outState.putInt(STATE_FROM_CURRENCY, ((CurrencyView) curFromObject).getCurrency().getCode());
+            outState.putInt(STATE_TO_CURRENCY, ((CurrencyView) curToObject).getCurrency().getCode());
+        }
+        super.onSaveInstanceState(outState);
     }
 
     private static class MoneyValueFilter extends DigitsKeyListener {
@@ -193,6 +263,21 @@ public class RateActivity extends AppCompatActivity implements IRateView {
         @Override
         public String toString() {
             return currency.getName();
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (!(o instanceof CurrencyView)) return false;
+
+            CurrencyView that = (CurrencyView) o;
+
+            return currency != null ? currency.equals(that.currency) : that.currency == null;
+        }
+
+        @Override
+        public int hashCode() {
+            return currency != null ? currency.hashCode() : 0;
         }
     }
 }

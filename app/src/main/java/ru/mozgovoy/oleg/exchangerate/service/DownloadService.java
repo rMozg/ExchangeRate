@@ -7,7 +7,8 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.os.ResultReceiver;
 
-import ru.mozgovoy.oleg.exchangerate.model.NetworkUtils;
+import ru.mozgovoy.oleg.exchangerate.model.MyApplication;
+import ru.mozgovoy.oleg.exchangerate.model.network.INetworkHelper;
 import ru.mozgovoy.oleg.exchangerate.ui.presenter.RatePresenter;
 
 public class DownloadService extends IntentService {
@@ -35,14 +36,17 @@ public class DownloadService extends IntentService {
             if (ACTION_START_DOWNLOAD.equals(action)) {
                 Parcelable resultReceiverParcelable = intent.getParcelableExtra(PARAM_RESULT_RECEIVER);
                 if (resultReceiverParcelable instanceof ResultReceiver) {
-                    startDownloadInService((ResultReceiver) resultReceiverParcelable);
+                    startDownloadInService(
+                            MyApplication.getInstance().getNetworkHelper(),
+                            (ResultReceiver) resultReceiverParcelable
+                    );
                 }
             }
         }
     }
 
-    private void startDownloadInService(ResultReceiver resultReceiver) {
-        String curXml = NetworkUtils.downloadFileToString(CURRENCY_RATE_ADDRESS);
+    private void startDownloadInService(INetworkHelper networkHelper, ResultReceiver resultReceiver) {
+        String curXml = networkHelper.downloadFileToString(CURRENCY_RATE_ADDRESS);
         Bundle result = new Bundle();
         result.putString(RatePresenter.DownloadResultReceiver.RESULT_OK_PARAM_XML_TEXT, curXml);
         resultReceiver.send(RatePresenter.DownloadResultReceiver.RESULT_OK, result);

@@ -1,4 +1,4 @@
-package ru.mozgovoy.oleg.exchangerate.model;
+package ru.mozgovoy.oleg.exchangerate.model.network;
 
 import android.support.annotation.Nullable;
 
@@ -7,10 +7,11 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class NetworkUtils {
+public class NetworkHelper implements INetworkHelper {
 
+    @Override
     @Nullable
-    public static String downloadFileToString(String address) {
+    public String downloadFileToString(String address) {
         String xmlString = null;
         HttpURLConnection urlConnection = null;
         try {

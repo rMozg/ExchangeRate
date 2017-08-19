@@ -16,7 +16,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import ru.mozgovoy.oleg.exchangerate.R;
 import ru.mozgovoy.oleg.exchangerate.model.core.Currency;
 import ru.mozgovoy.oleg.exchangerate.model.core.CurrencyRate;
-import ru.mozgovoy.oleg.exchangerate.model.exchange.ConverterUtils;
+import ru.mozgovoy.oleg.exchangerate.model.exchange.IConverterEngine;
 import ru.mozgovoy.oleg.exchangerate.model.storage.IStorage;
 import ru.mozgovoy.oleg.exchangerate.service.DownloadService;
 import ru.mozgovoy.oleg.exchangerate.ui.view.IRateView;
@@ -28,10 +28,16 @@ public class RatePresenter implements IRatePresenter {
     private final CurrencyRate alwaysInListCurrencyRate;
     private final IRateView rateView;
     private final IStorage storage;
+    private final IConverterEngine converterEngine;
     private final Map<Currency, CurrencyRate> currencyRates = new ConcurrentHashMap<>();
 
 
-    public RatePresenter(@NonNull Resources resources, @NonNull IRateView rateView, @NonNull IStorage storage) {
+    public RatePresenter(
+            @NonNull Resources resources,
+            @NonNull IRateView rateView,
+            @NonNull IStorage storage,
+            @NonNull IConverterEngine converterEngine
+    ) {
         alwaysInListCurrencyRate = new CurrencyRate(
                 new Currency(
                         643,
@@ -40,6 +46,7 @@ public class RatePresenter implements IRatePresenter {
                 ), 1, BigDecimal.ONE);
         this.rateView = rateView;
         this.storage = storage;
+        this.converterEngine = converterEngine;
         refreshCurrencyRatesMap(storage.getCurrencyRates());
     }
 
@@ -50,7 +57,7 @@ public class RatePresenter implements IRatePresenter {
             protected void onReceiveResult(int resultCode, Bundle resultData) {
                 if (resultCode == RESULT_OK) {
                     String xml = resultData.getString(RESULT_OK_PARAM_XML_TEXT);
-                    List<CurrencyRate> currencyRatesList = ConverterUtils.fromXml(xml);
+                    List<CurrencyRate> currencyRatesList = converterEngine.fromXml(xml);
                     if (currencyRatesList != null) {
                         refreshCurrencyRatesMap(currencyRatesList);
                         storage.setCurrencyRates(currencyRatesList);

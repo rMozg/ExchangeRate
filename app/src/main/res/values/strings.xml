@@ -2,4 +2,6 @@
     <string name="app_name">Конвертер валют</string>
     <string name="rub_name">Российский рубль</string>
     <string name="from_value_hint">0</string>
+    <string name="error_downloading">Ошибка загрузки даных</string>
+    <string name="error_calculate">Ошибка вычисления</string>
 </resources>

@@ -14,10 +14,14 @@ import java.util.List;
 import ru.mozgovoy.oleg.exchangerate.model.core.Currency;
 import ru.mozgovoy.oleg.exchangerate.model.core.CurrencyRate;
 
-public class ConverterUtils {
+public class ConverterEngine implements IConverterEngine {
 
+    @Override
     @Nullable
-    public static List<CurrencyRate> fromXml(String xml) {
+    public List<CurrencyRate> fromXml(@Nullable String xml) {
+        if (xml == null) {
+            return null;
+        }
         StringReader reader = new StringReader(xml);
         Serializer serializer = new Persister();
         try {

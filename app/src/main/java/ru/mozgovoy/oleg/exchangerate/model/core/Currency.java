@@ -29,4 +29,25 @@ public class Currency {
     public String getName() {
         return name;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Currency)) return false;
+
+        Currency currency = (Currency) o;
+
+        if (code != currency.code) return false;
+        if (!shortName.equals(currency.shortName)) return false;
+        return name.equals(currency.name);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = code;
+        result = 31 * result + shortName.hashCode();
+        result = 31 * result + name.hashCode();
+        return result;
+    }
 }

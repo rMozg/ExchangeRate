@@ -33,4 +33,25 @@ public class CurrencyRate {
     public BigDecimal getValue() {
         return value;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof CurrencyRate)) return false;
+
+        CurrencyRate that = (CurrencyRate) o;
+
+        if (nominal != that.nominal) return false;
+        if (!currency.equals(that.currency)) return false;
+        return value.equals(that.value);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = currency.hashCode();
+        result = 31 * result + nominal;
+        result = 31 * result + value.hashCode();
+        return result;
+    }
 }
