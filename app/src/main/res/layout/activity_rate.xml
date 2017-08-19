@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/swype_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    tools:context="ru.mozgovoy.oleg.exchangerate.ui.view.RateActivity">
+
+    <LinearLayout
+        android:id="@+id/screen_group"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Spinner
+                android:id="@+id/spinner_from"
+                style="@style/AppTheme.Spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="3"
+                android:spinnerMode="dialog" />
+
+            <EditText
+                android:id="@+id/edit_from"
+                style="@style/AppTheme.Edit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="4"
+                android:gravity="center"
+                android:hint="@string/from_value_hint"
+                android:inputType="numberDecimal"
+                android:text="" />
+
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/button_convert"
+            style="@style/AppTheme.Button"
+            android:layout_width="@dimen/convert_button_size"
+            android:layout_height="@dimen/convert_button_size"
+            android:layout_gravity="end|right|center_vertical"
+            android:layout_marginEnd="@dimen/big_margin"
+            android:layout_marginRight="@dimen/big_margin"
+            android:background="@drawable/round_ripple"
+            android:src="@drawable/ic_arrow_downward_black_24dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Spinner
+                android:id="@+id/spinner_to"
+                style="@style/AppTheme.Spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="3"
+                android:spinnerMode="dialog" />
+
+            <TextView
+                android:id="@+id/text_to"
+                style="@style/AppTheme.Text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="4"
+                android:freezesText="true"
+                android:gravity="center"
+                tools:text="123.456" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</android.support.v4.widget.SwipeRefreshLayout>

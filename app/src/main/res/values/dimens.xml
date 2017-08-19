@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="normal_elevation">12dp</dimen>
+    <dimen name="small_margin">8dp</dimen>
+    <dimen name="normal_margin">16dp</dimen>
+    <dimen name="big_margin">56dp</dimen>
+
+    <dimen name="big_textsize">18sp</dimen>
+
+    <dimen name="convert_button_size">48dp</dimen>
+</resources>
