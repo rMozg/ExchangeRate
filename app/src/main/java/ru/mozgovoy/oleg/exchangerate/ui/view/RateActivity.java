@@ -174,6 +174,7 @@ public class RateActivity extends AppCompatActivity implements IRateView {
     public void showError(ErrorType errorType) {
         switch (errorType) {
             case CALCULATE:
+                textTo.setText("");
                 Snackbar.make(screenGroup.getRootView(), getString(R.string.error_calculate), Snackbar.LENGTH_LONG).show();
                 break;
             case DOWNLOAD:
