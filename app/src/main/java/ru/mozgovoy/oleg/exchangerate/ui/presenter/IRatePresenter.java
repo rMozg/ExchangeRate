@@ -11,5 +11,5 @@ public interface IRatePresenter {
 
     void startDownloadNewRates(Context appContext);
 
-    void startRecalculate(@NonNull BigDecimal value, @NonNull Currency currencyFrom, @NonNull Currency currencyTo);
+    void recalculateButtonClicked(@NonNull BigDecimal value, @NonNull Currency currencyFrom, @NonNull Currency currencyTo);
 }

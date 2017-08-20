@@ -80,7 +80,7 @@ public class RatePresenter implements IRatePresenter {
     }
 
     @Override
-    public void startRecalculate(@NonNull BigDecimal value, @NonNull Currency currencyFrom, @NonNull Currency currencyTo) {
+    public void recalculateButtonClicked(@NonNull BigDecimal value, @NonNull Currency currencyFrom, @NonNull Currency currencyTo) {
         CurrencyRate currencyRateFrom = currencyRates.get(currencyFrom);
         CurrencyRate currencyRateTo = currencyRates.get(currencyTo);
         if (currencyRateFrom == null || currencyRateTo == null) {

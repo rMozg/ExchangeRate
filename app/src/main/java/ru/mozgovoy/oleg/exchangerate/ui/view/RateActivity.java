@@ -90,7 +90,7 @@ public class RateActivity extends AppCompatActivity implements IRateView {
                     Object curFromObject = spinnerFrom.getSelectedItem();
                     Object curToObject = spinnerTo.getSelectedItem();
                     if ((curFromObject instanceof CurrencyView) && (curToObject instanceof CurrencyView)) {
-                        ratePresenter.startRecalculate(
+                        ratePresenter.recalculateButtonClicked(
                                 sumfrom,
                                 ((CurrencyView) curFromObject).getCurrency(),
                                 ((CurrencyView) curToObject).getCurrency());
@@ -110,7 +110,6 @@ public class RateActivity extends AppCompatActivity implements IRateView {
     @Override
     protected void onResume() {
         super.onResume();
-        ratePresenter.startDownloadNewRates(getApplicationContext());
     }
 
     @Override
@@ -175,6 +174,7 @@ public class RateActivity extends AppCompatActivity implements IRateView {
     public void showError(ErrorType errorType) {
         switch (errorType) {
             case CALCULATE:
+                textTo.setText("");
                 Snackbar.make(screenGroup.getRootView(), getString(R.string.error_calculate), Snackbar.LENGTH_LONG).show();
                 break;
             case DOWNLOAD:
