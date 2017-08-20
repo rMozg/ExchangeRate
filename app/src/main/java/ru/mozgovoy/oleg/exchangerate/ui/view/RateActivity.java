@@ -110,7 +110,6 @@ public class RateActivity extends AppCompatActivity implements IRateView {
     @Override
     protected void onResume() {
         super.onResume();
-        ratePresenter.startDownloadNewRates(getApplicationContext());
     }
 
     @Override
