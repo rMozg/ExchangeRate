@@ -90,7 +90,7 @@ public class RateActivity extends AppCompatActivity implements IRateView {
                     Object curFromObject = spinnerFrom.getSelectedItem();
                     Object curToObject = spinnerTo.getSelectedItem();
                     if ((curFromObject instanceof CurrencyView) && (curToObject instanceof CurrencyView)) {
-                        ratePresenter.startRecalculate(
+                        ratePresenter.recalculateButtonClicked(
                                 sumfrom,
                                 ((CurrencyView) curFromObject).getCurrency(),
                                 ((CurrencyView) curToObject).getCurrency());
